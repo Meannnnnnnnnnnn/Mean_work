@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>TurtleBot Position</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script>
+        function fetchPosition() {
+            fetch('/position')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        document.getElementById('position').innerText = data.error;
+                    } else {
+                        document.getElementById('position').innerText = `X: ${data.x.toFixed(2)}, Y: ${data.y.toFixed(2)}, Z: ${data.z.toFixed(2)}`;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching position:', error);
+                    document.getElementById('position').innerText = 'Error fetching position';
+                });
+        }
+
+        setInterval(fetchPosition, 1000); // Fetch position every second
+    </script>
+</head>
+<body class="bg-light">
+    <div class="container mt-5">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h1 class="mb-0">TurtleBot Position Server</h1>
+            </div>
+            <div class="card-body">
+                <p id="position" class="display-4">Loading position...</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
